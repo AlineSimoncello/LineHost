@@ -1,39 +1,63 @@
-
-//at_7TNebIAoyAb0DBXczzyt3SQvgz9Cz
-
-document.getElementById('domainForm').addEventListener('submit', function (e) {
+document.getElementById("domainForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  const apiKey = '';
+  const domain = document.getElementById("domain").value;
+  const respostaDiv = document.querySelector(".resposta");
 
-const apiKey = 'at_7TNebIAoyAb0DBXczzyt3SQvgz9Cz';
-const domain = document.getElementById('domain').value;
-const respostaDiv = document.querySelector('.resposta')
+  const apiUrl = `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${apiKey}&domainName=${domain}&outputFormat=JSON`;
 
-const apiUrl = `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${apiKey}&domainName=${domain}&outputFormat=JSON`;
+  axios
+    .get(apiUrl)
+    .then((response) => {
+      console.log(response.data);
+      const whoisData = response.data;
 
-axios.get(apiUrl)
-  .then(response => {
-    console.log(response.data);
-    const whoisData = response.data;
+      // Verifique se há dados WHOIS disponíveis
+      if (whoisData.dataError === "MISSING_WHOIS_DATA") {
+        respostaDiv.innerHTML = `Não há informações WHOIS disponíveis para o domínio ${domain}. Pode estar disponível.`;
+      } else if (
+        whoisData.WhoisRecord &&
+        whoisData.WhoisRecord.registryData &&
+        whoisData.WhoisRecord.registryData.rawText.includes(
+          "No match for domain"
+        )
+      ) {
+        respostaDiv.innerHTML = `O domínio ${domain} está disponível.`;
 
-   // Limpa a resposta anterior
-   respostaDiv.innerHTML = '';
-
-   // Verifique se há dados WHOIS disponíveis
-   if (whoisData.dataError === "MISSING_WHOIS_DATA") {
-    respostaDiv.innerHTML = `Não há informações WHOIS disponíveis para o domínio ${domain}. Pode estar disponível.`;
-  } else if (whoisData.WhoisRecord && whoisData.WhoisRecord.registryData && whoisData.WhoisRecord.registryData.rawText.includes('No match for domain')) {
-    respostaDiv.innerHTML = `O domínio ${domain} está disponível.`;
-  } else if (whoisData.WhoisRecord && whoisData.WhoisRecord.registryData && whoisData.WhoisRecord.registryData.domainName) {
-    respostaDiv.innerHTML = `O domínio ${domain} está registrado.`;
-    console.log(`Detalhes WHOIS:`, whoisData.WhoisRecord);
-  } else {
-    respostaDiv.innerHTML = `Não foi possível determinar o status do domínio ${domain}.`;
-  }
-})
-.catch(error => {
-  console.error('Erro ao consultar a API WhoisXMLAPI:', error.message);
-});
+        setTimeout(() => {
+          // Limpa a resposta anterior
+          respostaDiv.innerHTML = "";
+          document.getElementById("domain").value = ""; // Correção aqui
+        }, 2000);
+        
+      } else if (
+        whoisData.WhoisRecord &&
+        whoisData.WhoisRecord.registryData &&
+        whoisData.WhoisRecord.registryData.domainName
+      ) {
+        respostaDiv.innerHTML = `O domínio ${domain} está registrado.`;
+        console.log(`Detalhes WHOIS:`, whoisData.WhoisRecord);
+        setTimeout(() => {
+          // Limpa a resposta anterior
+          respostaDiv.innerHTML = "";
+          document.getElementById("domain").value = ""; // Correção aqui
+        }, 2000);
+        
+      } else {
+        respostaDiv.innerHTML = `Não foi possível determinar o status do domínio ${domain}.`;
+        setTimeout(() => {
+          // Limpa a resposta anterior
+          respostaDiv.innerHTML = "";
+          document.getElementById("domain").value = ""; // Correção aqui
+        }, 2000);
+        
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao consultar a API WhoisXMLAPI:", error.message);
+      respostaDiv.innerHTML = "Não foi possível realizar a consulta. Chave não registrada. Para ver a funcionalidade, favor entrar em contato."
+    });
 });
 
 //validação das mensagens
@@ -47,13 +71,11 @@ let validationMessage = document.getElementById("validationMessage");
 let validationForm = document.getElementById("validationForm");
 
 btnMessage.addEventListener("click", (e) => {
-
   e.preventDefault();
- 
 
-  if(email.value == "" || message.value == "" || nameForm.value == ""){
+  if (email.value == "" || message.value == "" || nameForm.value == "") {
     validationForm.textContent = "Preencha todos os campos para poder enviar";
-  } else if (validatorEmail(email.value) === true){
+  } else if (validatorEmail(email.value) === true) {
     validationEmail.textContent = "";
     validationMessage.textContent = "";
     validationForm.textContent = "Mensagem enviada! (Ou não, rs)";
@@ -64,27 +86,23 @@ btnMessage.addEventListener("click", (e) => {
 
     setTimeout(() => {
       validationForm.textContent = "";
-    },2000);
+    }, 2000);
   } else {
-    validationForm.textContent = "Oops, algo deu errado..."
+    validationForm.textContent = "Oops, algo deu errado...";
   }
-
-  
-  
 });
 
 email.addEventListener("keyup", () => {
   if (validatorEmail(email.value) !== true) {
-    validationEmail.textContent = "Por favor, digite um e-mail válido. Ex: nome@abc.com"
+    validationEmail.textContent =
+      "Por favor, digite um e-mail válido. Ex: nome@abc.com";
   } else {
     validationEmail.textContent = "";
   }
-})
+});
 
 function validatorEmail(email) {
-  let emailRegex = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+  let emailRegex =
+    /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
   return emailRegex.test(email);
 }
-
-
-
