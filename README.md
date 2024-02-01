@@ -10,7 +10,7 @@ Utilizei links âncoras para facilitar a navegação dentro do site, também lin
 ## Funcionalidades:
 
 - Disponibilidade de domínio: É possível verificar se um domínio está disponível ou se já está sendo utilizado. Utilizei a API Whois para fazer essa verificação. 
-A chave que estou utilizando da API Whois tem limite de verificações, por isso subi o site para o GitHub sem a chave da API. Ao digitar o domínio, aparecerá uma mensagem informando que a chave da API não está registrada e orientando a entrar em contato. 
+A chave que estou utilizando da API Whois tem limite de verificações, por isso subi o site para o GitHub sem a chave da API. Ao digitar o domínio, aparecerá uma mensagem informando que ela não está registrada e orientando a entrar em contato. 
 
 - Formulário para envio de mensagem: Coloquei uma simples validação para que não seja possível encaminhar mensagens vazias, sem nome ou e-mail. Também coloquei validação no e-mail, com uma regex, indicando o formato de e-mail válido.
 
