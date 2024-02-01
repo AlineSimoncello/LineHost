@@ -22,9 +22,15 @@ p {
   height: 76px;
   background-color: #e8edf1;
   padding: 0 2rem;
-  position: fixed;
+  transition: top 0.4s;
+  position: sticky;
+  top: 0;
   box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.32);
   z-index: 1;
+}
+
+.navbar-hidden {
+  top: -76px; 
 }
 
 nav {
@@ -46,7 +52,7 @@ nav {
   height: 80px;
   margin: 0;
   margin-top: 30px;
-  display: inline-block;
+  display: flex;
 }
 
 .navbar-items li {
@@ -172,8 +178,7 @@ nav {
   justify-content: space-between;
   align-items: flex-end;
   width: 90%;
-  margin: 50px auto 0;
-  padding: 0 80px 0 80px;
+  margin: 30px auto 0;
 }
 
 .plan {
@@ -531,10 +536,10 @@ ul {
 
 /* 576px */
 @media (max-width: 576px) {
-  html, body {
-    overflow-x: hidden;
+  .navbar-container {
+    padding: 0.5rem;
   }
-
+  
   .navbar-items li {
     font-size: 12px;
     margin-left: 10px;
@@ -566,7 +571,7 @@ ul {
   .plan {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 3rem;
   }
 
   .searchdomain-container h2 {
@@ -625,13 +630,12 @@ ul {
 } 
 
 @media (max-width: 375px) {
+.navbar-container {
+  padding: 0;
+}
 
-  .navbar-container {
-    padding: 0;
-  }
-
-  .default-btn {
-    margin-right: 3px;
+  .navbar-items li {
+  margin-left: 10px;
 }
 
 .main-banner h1 {

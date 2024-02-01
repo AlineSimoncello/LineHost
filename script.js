@@ -13,7 +13,7 @@ document.getElementById("domainForm").addEventListener("submit", function (e) {
       console.log(response.data);
       const whoisData = response.data;
 
-      // Verifique se há dados WHOIS disponíveis
+      
       if (whoisData.dataError === "MISSING_WHOIS_DATA") {
         respostaDiv.innerHTML = `Não há informações WHOIS disponíveis para o domínio ${domain}. Pode estar disponível.`;
       } else if (
@@ -26,9 +26,9 @@ document.getElementById("domainForm").addEventListener("submit", function (e) {
         respostaDiv.innerHTML = `O domínio ${domain} está disponível.`;
 
         setTimeout(() => {
-          // Limpa a resposta anterior
+          
           respostaDiv.innerHTML = "";
-          document.getElementById("domain").value = ""; // Correção aqui
+          document.getElementById("domain").value = ""; 
         }, 2000);
         
       } else if (
@@ -39,17 +39,17 @@ document.getElementById("domainForm").addEventListener("submit", function (e) {
         respostaDiv.innerHTML = `O domínio ${domain} está registrado.`;
         console.log(`Detalhes WHOIS:`, whoisData.WhoisRecord);
         setTimeout(() => {
-          // Limpa a resposta anterior
+         
           respostaDiv.innerHTML = "";
-          document.getElementById("domain").value = ""; // Correção aqui
+          document.getElementById("domain").value = ""; 
         }, 2000);
         
       } else {
         respostaDiv.innerHTML = `Não foi possível determinar o status do domínio ${domain}.`;
         setTimeout(() => {
-          // Limpa a resposta anterior
+         
           respostaDiv.innerHTML = "";
-          document.getElementById("domain").value = ""; // Correção aqui
+          document.getElementById("domain").value = ""; 
         }, 2000);
         
       }
@@ -59,8 +59,6 @@ document.getElementById("domainForm").addEventListener("submit", function (e) {
       respostaDiv.innerHTML = "Não foi possível realizar a consulta. Chave não registrada. Para ver a funcionalidade, favor entrar em contato."
     });
 });
-
-//validação das mensagens
 
 let email = document.getElementById("email");
 let nameForm = document.getElementById("name");
@@ -105,4 +103,22 @@ function validatorEmail(email) {
   let emailRegex =
     /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
   return emailRegex.test(email);
+}
+
+let prevScrollpos = window.pageYOffset;
+const navbar = document.querySelector(".navbar-container");
+
+window.onscroll = function() {
+  let currentScrollPos = window.pageYOffset;
+
+  if (prevScrollpos > currentScrollPos) {
+    navbar.classList.remove("navbar-hidden");
+  } else {
+    navbar.classList.add("navbar-hidden");
+  }
+
+  if (currentScrollPos === 0) {
+    navbar.classList.remove("navbar-hidden");
+  }
+  prevScrollpos = currentScrollPos;
 }
